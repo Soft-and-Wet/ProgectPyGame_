@@ -3,7 +3,7 @@ import pygame
 pygame.init()
 
 from other import *
-from units import *
+from sprites import *
 
 
 # all_sprites = pygame.sprite.Group()
@@ -39,10 +39,11 @@ class Board:
             return None
 
     def on_click(self, cell_coord):
-        x, y = cell_coord
+        # x, y = cell_coord
         """if cell_coord is not None:
             # ...
             self.render()"""
+        pass
 
     def get_click(self, mouse_pos):
         cell = self.get_cell(mouse_pos)

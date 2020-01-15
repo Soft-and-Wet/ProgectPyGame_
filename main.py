@@ -3,7 +3,7 @@ import sys
 import pygame
 
 from board import *
-from units import *
+from sprites import *
 
 pygame.init()
 
@@ -17,8 +17,12 @@ board.set_view(0, 0, cell_size)
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
 running = True
+
 while running:
     screen.fill((0, 0, 255))
+
+    # all_sprites.draw(screen)
+
     for event in pygame.event.get():
         # закрытие на shift + esc
         if event.type == pygame.KEYDOWN:
@@ -30,4 +34,5 @@ while running:
             board.get_click(event.pos)
     screen.fill((0, 0, 0))
     board.render()
+    all_sprites.draw(screen)
     pygame.display.flip()

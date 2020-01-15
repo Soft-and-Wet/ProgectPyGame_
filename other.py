@@ -6,9 +6,9 @@ import pygame
 #
 # требуется в дальнейшем реализовать камеру (я думаю, песонаж должен быть чуть ниже центра)
 
-board_width = 20
-board_height = 40
-cell_size = 100
+board_width = 40
+board_height = 25
+cell_size = 40
 
 # инициализация времени
 clock = pygame.time.Clock()
