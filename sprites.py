@@ -26,6 +26,12 @@ all_sprites.add(sprite)"""
 p_wall_image = pygame.transform.scale(load_image("p_wall.png"), (cell_size, cell_size))
 p_not_wall_image = pygame.transform.scale(load_image("p_not_wall.png"), (cell_size, cell_size))
 
+p_hero_1_look_right = pygame.transform.scale(load_image("p_hero_1_look_right.png"), (cell_size, cell_size))
+p_hero_1_look_right.set_colorkey(p_hero_1_look_right.get_at((0, 0)))
+p_hero_1_look_left = pygame.transform.scale(load_image("p_hero_1_look_left.png"), (cell_size, cell_size))
+p_hero_1_look_left.set_colorkey(p_hero_1_look_left.get_at((0, 0)))
+
+
 for i in range(board_height):
     for j in range(board_width):
         if i == 0 or i == board_height - 1 or j == 0 or j == board_width - 1:

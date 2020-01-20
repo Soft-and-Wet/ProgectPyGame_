@@ -1,6 +1,5 @@
 import pygame
 
-
 # поле
 # поле: 20 в ширину на 40 в высоту, видимая на акране часть: около 15-19 на 10 - 12 (в зависимости от разрешения экрана)
 #
@@ -9,6 +8,8 @@ import pygame
 board_width = 40
 board_height = 25
 cell_size = 40
+
+fps = 60
 
 # инициализация времени
 clock = pygame.time.Clock()
