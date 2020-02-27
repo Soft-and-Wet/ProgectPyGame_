@@ -17,6 +17,8 @@ class Character(Sprite):
         self.rect.x = x
         self.rect.y = y
         self.onFlour = False
+        self.health = 100
+        self.force = 100
 
     def draw(self, surface):
         surface.blit(self.image, (self.rect.x, self.rect.y))
@@ -58,6 +60,12 @@ class Character(Sprite):
     def Shot(self, coord2):
         coord1 = [self.rect.x, self.rect.y]
         return Shot(coord1, coord2)
+
+    def status(self):
+        return self.health, self.force
+
+    def hurt(self, damage):
+        self.health -= damage
 
 
 

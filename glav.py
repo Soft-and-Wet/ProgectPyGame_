@@ -80,7 +80,7 @@ while running:
             coord2 = list(event.pos)
             isShot = True
 
-    screen.fill((125, 125, 125))
+    screen.fill((47, 79, 79))
     hero.update(flags, platforms)
     for elem in enemies.sprites():
         elem.update()
@@ -95,6 +95,8 @@ while running:
             shots.add(shot)
     for shot in shots.sprites():
         shot.update(enemies, bloks)
+    health, force = hero.status()
+    bar.update(health, force)
     bloks.draw(screen)
     hero.draw(screen)
     enemies.draw(screen)

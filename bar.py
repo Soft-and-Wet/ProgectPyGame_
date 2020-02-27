@@ -5,16 +5,17 @@ import pygame
 
 class StatusBar():
     def __init__(self):
-        self.maxHealth = 100
-        self.maxForce = 100
-        self.health = self.maxHealth
-        self.force = self.maxForce
         self.bars = pygame.Surface((680, 120))
-        self.imageOfHealth = Surface((680, 40))
-        self.imageOfHealth.fill((255, 0, 0))
-        self.imageOfForce = Surface((680, 40))
-        self.imageOfForce.fill((0, 0, 255))
+        self.health = 100
+        self.force = 100
         self.coord = (40, 640)
 
     def draw(self, surface):
-        surface.blit(self.imageOfHealth, self.coord)
+        self.bars.fill((0, 0, 0))
+        pygame.draw.rect(self.bars, (255, 0, 0), (0, 0, 680 * self.health / 100, 40))
+        pygame.draw.rect(self.bars, (0, 0, 255), (0, 80, 680 * self.force / 100, 40))
+        surface.blit(self.bars, self.coord)
+
+    def update(self, health, force):
+        self.health = health
+        self.force = force

@@ -6,7 +6,7 @@ class Blok(Sprite):
     def __init__(self, x, y):
         Sprite.__init__(self)
         self.image = Surface((40, 40))
-        self.image.fill((0, 0, 200))
+        self.image.fill((115, 133, 149))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
