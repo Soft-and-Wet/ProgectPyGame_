@@ -27,6 +27,7 @@ class Bullet(Sprite):
     def collide(self, hero, bloks):
         if collide_rect(self, hero):
             hero.kill()
+            self.kill()
         for blok in bloks:
             if collide_rect(self, blok):
                 self.kill()

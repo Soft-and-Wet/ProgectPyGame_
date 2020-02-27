@@ -7,14 +7,14 @@ SPEEDBULLET = 5
 class Shot(Sprite):
     def __init__(self, coord1, coord2):
         Sprite.__init__(self)
+        self.speed_x = 0
+        self.speed_y = 0
+        self.speed_x, self.speed_y = calculationOfSpeed(coord1, coord2, SPEEDBULLET)
         self.image = Surface((10, 5))
         self.image.fill((200, 10, 10))
         self.rect = self.image.get_rect()
         self.rect.x = coord1[0]
         self.rect.y = coord1[1]
-        self.speed_x = 0
-        self.speed_y = 0
-        self.speed_x, self.speed_y = calculationOfSpeed(coord1, coord2, SPEEDBULLET)
 
     def draw(self, surface):
         surface.blit(self.image, (self.rect.x, self.rect.y))
@@ -32,5 +32,3 @@ class Shot(Sprite):
         for blok in bloks:
             if collide_rect(self, blok):
                 self.kill()
-
-

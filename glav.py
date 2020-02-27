@@ -4,7 +4,9 @@ from character import Character
 from blok import Blok
 from enemy import Enemy
 from shot import Shot
-# dasva
+from bar import StatusBar
+
+
 SIZE = (760, 600)
 SIZE_WINDOW = (760, 800)
 
@@ -30,12 +32,12 @@ window = pygame.display.set_mode(SIZE_WINDOW)
 screen = pygame.Surface(SIZE)
 bloks = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
-enemies.add(Enemy(200, 280))
+enemies.add(Enemy(300, 200))
 bullets = pygame.sprite.Group()
 shots = pygame.sprite.Group()
+bar = StatusBar()
 running = True
 hero = Character(50, 50)
-bloks.add(hero)
 flags = [False, False, False]
 timer = pygame.time.Clock()
 platforms = []
@@ -94,9 +96,11 @@ while running:
     for shot in shots.sprites():
         shot.update(enemies, bloks)
     bloks.draw(screen)
+    hero.draw(screen)
     enemies.draw(screen)
     bullets.draw(screen)
     shots.draw(screen)
+    bar.draw(window)
     window.blit(screen, (0, 0))
 
     pygame.display.flip()
