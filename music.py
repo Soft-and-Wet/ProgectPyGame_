@@ -6,8 +6,5 @@ import pygame.mixer
 pygame.mixer.init()
 
 # фоновая музыка
-m_main = pygame.mixer.music.load("")  # в кавычках: папка/нахвание
-
-# другие звуки
-m_other = pygame.mixer.Sound("")
-# ...
+pygame.mixer.music.load("music/John Williams - Star Wars Main Theme.mp3")  # в кавычках: папка/название
+m_game = pygame.mixer.Sound("music/Order-66.wav")

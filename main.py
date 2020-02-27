@@ -16,7 +16,9 @@ board.set_view(0, 0, cell_size)
 
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
+menu = True
 running = True
+
 move_r, move_l, move_u = False, False, False
 move_d = True
 hero = True
@@ -24,6 +26,27 @@ hero = True
 left_right_pose = True
 hero_x = 100
 hero_y = 100
+
+"""while menu:
+
+    screen.fill((0, 0, 0))
+    board.render()
+    all_sprites.draw(screen)
+    
+    for event in pygame.event.get():
+        # закрытие на shift + esc
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE and pygame.key.get_mods() & pygame.KMOD_LSHIFT:
+                running = False
+                pygame.quit()
+                sys.exit()
+            if event.key == pygame.K_KP_ENTER:
+                pass
+
+    pygame.display.flip()
+    clock.tick(fps)
+    pygame.event.pump()"""
+
 
 while running:
     # all_sprites.draw(screen)
