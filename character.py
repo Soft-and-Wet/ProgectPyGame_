@@ -1,10 +1,12 @@
 from pygame.sprite import Sprite, collide_rect
-from pygame import Surface
+from pygame import Surface, time
 from shot import Shot
 
 SPEED = 4
 GRAVITY = 0.4
 JUMP = 12
+SPEEDOFREGENERATION = 1000
+FORCEOFREGENERATION = 1
 
 class Character(Sprite):
     def __init__(self, x, y):
@@ -19,6 +21,9 @@ class Character(Sprite):
         self.onFlour = False
         self.health = 100
         self.force = 100
+        self.clock = time.Clock()
+        self.regeneration = SPEEDOFREGENERATION
+
 
     def draw(self, surface):
         surface.blit(self.image, (self.rect.x, self.rect.y))
@@ -42,6 +47,18 @@ class Character(Sprite):
         self.rect.y += self.speed_y
         self.collide(0, self.speed_y, platforms)
 
+        if self.regeneration > 0:
+            self.regeneration -= self.clock.tick()
+        if self.regeneration < 0:
+            self.cooldown = 0
+
+        if self.regeneration <= 0:
+            self.regeneration = SPEEDOFREGENERATION
+            self.health += FORCEOFREGENERATION
+            self.force += FORCEOFREGENERATION
+
+
+
     def collide(self, speed_x, speed_y, platforms):
         for pl in platforms:
             if collide_rect(self, pl):
@@ -58,8 +75,11 @@ class Character(Sprite):
                     self.speed_y = 0
 
     def Shot(self, coord2):
-        coord1 = [self.rect.x, self.rect.y]
-        return Shot(coord1, coord2)
+        if self.force >= 30:
+            self.force -= 30
+            coord1 = [self.rect.x, self.rect.y]
+            return Shot(coord1, coord2)
+
 
     def status(self):
         return self.health, self.force
