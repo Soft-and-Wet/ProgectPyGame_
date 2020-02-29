@@ -8,6 +8,7 @@ JUMP = 12
 SPEEDOFREGENERATION = 1000
 FORCEOFREGENERATION = 1
 
+
 class Character(Sprite):
     def __init__(self, x, y):
         Sprite.__init__(self)
@@ -24,7 +25,6 @@ class Character(Sprite):
         self.clock = time.Clock()
         self.regeneration = SPEEDOFREGENERATION
 
-
     def draw(self, surface):
         surface.blit(self.image, (self.rect.x, self.rect.y))
 
@@ -36,7 +36,7 @@ class Character(Sprite):
         if flags[2] and self.onFlour:
             self.speed_y = - JUMP
             self.onFlour = False
-        if not(flags[0] or flags[1]):
+        if not (flags[0] or flags[1]):
             self.speed_x = 0
         if not self.onFlour:
             self.speed_y += GRAVITY
@@ -56,8 +56,6 @@ class Character(Sprite):
             self.regeneration = SPEEDOFREGENERATION
             self.health += FORCEOFREGENERATION
             self.force += FORCEOFREGENERATION
-
-
 
     def collide(self, speed_x, speed_y, platforms):
         for pl in platforms:
@@ -80,17 +78,8 @@ class Character(Sprite):
             coord1 = [self.rect.x, self.rect.y]
             return Shot(coord1, coord2)
 
-
     def status(self):
         return self.health, self.force
 
     def hurt(self, damage):
         self.health -= damage
-
-
-
-
-
-
-
-

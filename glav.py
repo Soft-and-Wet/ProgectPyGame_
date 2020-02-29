@@ -5,7 +5,7 @@ from blok import Blok
 from enemy import Enemy
 from shot import Shot
 from bar import StatusBar
-
+from items import *
 
 SIZE = (760, 600)
 SIZE_WINDOW = (760, 800)
@@ -20,7 +20,7 @@ level = [
     '-                 -',
     '-        -----    -',
     '-                 -',
-    '-                 -',
+    '-   *+            -',
     '-   ---           -',
     '-                 -',
     '-                 -',
@@ -36,11 +36,11 @@ enemies.add(Enemy(300, 200))
 bullets = pygame.sprite.Group()
 shots = pygame.sprite.Group()
 bar = StatusBar()
+buffs = pygame.sprite.Group()
 running = True
 hero = Character(50, 50)
 flags = [False, False, False]
 timer = pygame.time.Clock()
-platforms = []
 
 x = 0
 y = 0
@@ -49,11 +49,17 @@ for row in level:
         if col == '-':
             blok = Blok(x, y)
             blok.add(bloks)
-            platforms.append(blok)
+        if col == '+':
+            buff = BallOfHealth(x, y)
+            buff.add(buffs)
+        if col == '*':
+            buff = BallOfForce(x, y)
+            buff.add(buffs)
         x += 40
     y += 40
     x = 0
 pygame.display.flip()
+pygame.display.toggle_fullscreen()
 
 while running:
     isShot = False
@@ -81,9 +87,9 @@ while running:
             isShot = True
 
     screen.fill((47, 79, 79))
-    hero.update(flags, platforms)
+    hero.update(flags, bloks)
     for elem in enemies.sprites():
-        elem.update()
+        elem.update(bloks, hero)
         bul = elem.attack(hero)
         if bul is not None:
             bullets.add(bul)
@@ -97,13 +103,16 @@ while running:
         shot.update(enemies, bloks)
     health, force = hero.status()
     bar.update(health, force)
+    buffs.update(hero)
     bloks.draw(screen)
     hero.draw(screen)
     enemies.draw(screen)
     bullets.draw(screen)
     shots.draw(screen)
+    buffs.draw(screen)
     bar.draw(window)
     window.blit(screen, (0, 0))
 
     pygame.display.flip()
+    pygame.display.toggle_fullscreen()
     timer.tick(60)
