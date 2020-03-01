@@ -45,6 +45,9 @@ class Enemy(Sprite):
                 self.image = image.load('images/clone/clone_all_colored_l.png').convert()
                 self.image.set_colorkey(self.image.get_at((0, 0)))
                 self.positionOfGun = (0, 24)
+        else:
+            self.image = image.load('images/clone/clone_all_colored_f.png').convert()
+            self.image.set_colorkey(self.image.get_at((0, 0)))
         if self.cooldown > 0:
             self.cooldown -= self.clock.tick()
         if self.cooldown < 0:

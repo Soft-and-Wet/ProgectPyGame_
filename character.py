@@ -1,5 +1,5 @@
 from pygame.sprite import Sprite, collide_rect
-from pygame import Surface, time
+from pygame import Surface, time, image
 from shot import Shot
 
 SPEED = 4
@@ -14,8 +14,8 @@ class Character(Sprite):
         Sprite.__init__(self)
         self.speed_x = 0
         self.speed_y = 0
-        self.image = Surface((20, 30))
-        self.image.fill((128, 0, 0))
+        self.image = image.load('images/jedi/jedi_f.png').convert()
+        self.image.set_colorkey(self.image.get_at((0, 0)))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -31,13 +31,19 @@ class Character(Sprite):
     def update(self, flags, platforms):
         if flags[0]:
             self.speed_x = -SPEED
+            self.image = image.load('images/jedi/jedi_run_l_1.png').convert()
+            self.image.set_colorkey(self.image.get_at((0, 0)))
         if flags[1]:
             self.speed_x = SPEED
+            self.image = image.load('images/jedi/jedi_run_r_1.png').convert()
+            self.image.set_colorkey(self.image.get_at((0, 0)))
         if flags[2] and self.onFlour:
             self.speed_y = - JUMP
             self.onFlour = False
         if not (flags[0] or flags[1]):
             self.speed_x = 0
+            self.image = image.load('images/jedi/jedi_f.png').convert()
+            self.image.set_colorkey(self.image.get_at((0, 0)))
         if not self.onFlour:
             self.speed_y += GRAVITY
 

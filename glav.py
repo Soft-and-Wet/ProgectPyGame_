@@ -6,29 +6,30 @@ from enemy import Enemy
 from shot import Shot
 from bar import StatusBar
 from items import *
+from defs import *
 
-SIZE = (760, 600)
+SIZE = (920, 600)
 SIZE_WINDOW = (760, 800)
 
 level = [
-    '-------------------',
-    '-                 -',
-    '-                 -',
-    '-                 -',
-    '-   -------       -',
-    '-                 -',
-    '-                 -',
-    '-        -----    -',
-    '-                 -',
-    '-   *+            -',
-    '-   ---           -',
-    '-                 -',
-    '-                 -',
-    '-                 -',
-    '-------------------',
+    '52222222222222222222226',
+    '1                     3',
+    '1                     3',
+    '1                     3',
+    '1   5222226           3',
+    '1                     3',
+    '1         s           3',
+    '1        52226        3',
+    '1                     3',
+    '1   *+                3',
+    '1   526               3',
+    '1                     3',
+    '1                     3',
+    '1                     3',
+    '84444444444444444444447',
 ]
 
-window = pygame.display.set_mode(SIZE_WINDOW)
+window = pygame.display.set_mode(SIZE_WINDOW, pygame.FULLSCREEN)
 screen = pygame.Surface(SIZE)
 bloks = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
@@ -37,6 +38,7 @@ bullets = pygame.sprite.Group()
 shots = pygame.sprite.Group()
 bar = StatusBar()
 buffs = pygame.sprite.Group()
+storages = pygame.sprite.Group()
 running = True
 hero = Character(50, 50)
 flags = [False, False, False]
@@ -46,18 +48,24 @@ x = 0
 y = 0
 for row in level:
     for col in row:
-        if col == '-':
-            blok = Blok(x, y)
-            blok.add(bloks)
         if col == '+':
             buff = BallOfHealth(x, y)
             buff.add(buffs)
-        if col == '*':
+        elif col == '*':
             buff = BallOfForce(x, y)
             buff.add(buffs)
+        elif col == 's':
+            storage = Storage(x, y)
+            storage.add(storages)
+        elif col != ' ':
+            blok = Blok(x, y, col)
+            blok.add(bloks)
         x += 40
     y += 40
+    if x > SIZE[0] or y > SIZE[1]:
+        SIZE = (x, y)
     x = 0
+print(SIZE)
 pygame.display.flip()
 pygame.display.toggle_fullscreen()
 
@@ -104,15 +112,16 @@ while running:
     health, force = hero.status()
     bar.update(health, force)
     buffs.update(hero)
+    storages.update(shots, buffs)
     bloks.draw(screen)
     hero.draw(screen)
     enemies.draw(screen)
     bullets.draw(screen)
     shots.draw(screen)
     buffs.draw(screen)
+    storages.draw(screen)
     bar.draw(window)
-    window.blit(screen, (0, 0))
-
+    window.blit(screen, camera(hero, SIZE))
     pygame.display.flip()
     pygame.display.toggle_fullscreen()
     timer.tick(60)
