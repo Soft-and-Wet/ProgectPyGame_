@@ -1,14 +1,9 @@
+import os
 import sys
+from music import *
 
-from PyQt5 import Qt
-from PyQt5.QtCore import QSize
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QToolButton
 from PyQt5.QtGui import QPixmap, QFont, QIcon
-
-# некоторые комментарии разумно было бы оставить, все равно подписывать потом
-# ЕСЛИ ЭТО СРАБОТАЕТ БЕЗ СБОЯ ОСТАЛЬНЫХ НАСТРОЕК (ЦВЕТ ШРИФТА НАПРИМЕР) ТО ПОПРОБУЙ:
-# self.btn_кнопка.setFont(QFont("Times", 12)) попробуй таймс убрать. а еще лучше посмотри
-# как менять размер с .setStyleSheet(""" """)
 
 
 class Menu(QMainWindow):
@@ -20,18 +15,22 @@ class Menu(QMainWindow):
 
         # запуск игры
 
-        self.btn_play = QPushButton('', self)
+        self.btn_play = QToolButton(self)
 
         # звук
 
-        self.btn_vol_plus = QPushButton('', self)
-        self.btn_vol_minus = QPushButton('', self)
+        self.btn_vol_plus = QToolButton(self)
+        self.btn_vol_minus = QToolButton(self)
 
-        # наверное в зависимости от уровня звука будет меняться картинка (или просто цифры красиво выведи)
+        self.s_lvl_volume = [[0, 'sw_pic/menu/vol_lvl_0'],
+                             [2, 'sw_pic/menu/vol_lvl_1'],
+                             [4, 'sw_pic/menu/vol_lvl_2'],
+                             [6, 'sw_pic/menu/vol_lvl_3'],
+                             [8, 'sw_pic/menu/vol_lvl_4'],
+                             [10, 'sw_pic/menu/vol_lvl_5']]
+        self.lvl_volume = 6
 
-        self.text_volume = QLabel(self)
-
-        self.lvl_volume = [0, 0.25, 0.5, 0.75, 1]
+        self.volume = QLabel(self)
 
         # управление
 
@@ -40,6 +39,8 @@ class Menu(QMainWindow):
         self.initUI()
 
     def initUI(self):
+
+        pygame.mixer.music.play()
 
         # окно
 
@@ -55,84 +56,80 @@ class Menu(QMainWindow):
         # кнопки
         # играть
 
-        self.btn_play.setIcon(QIcon('sw_pic/menu/16119774.png'))
-        self.btn_play.setIconSize(QSize(75, 75))
-        # РАЗМЕР ЗАМЕНИТЬ НА РАЗМЕР КАРТИНКИ
+        self.btn_play.setIcon(QIcon('sw_pic/menu/but_play.png'))
+        self.btn_play.setAutoRaise(True)
+        self.btn_play.setMinimumSize(113, 43)
+        self.btn_play.setIconSize(self.btn_play.minimumSize())
         self.btn_play.adjustSize()
-        self.btn_play.setStyleSheet("""
-            QPushButton {background-color: rgb(51,122,183);}
-        """)
-        # СКАЗАТЬ МНЕ СКАЗАТЬ ТЕБЕ ЦВЕТ ФОНА!!!!!!!!!!!!! ВСТАВИТЬ ВЫШЕ (и в дальнейшем)
-        self.btn_play.move(350, 250)
+        self.btn_play.move(325, 227)
         self.btn_play.clicked.connect(self.startPlay)
 
         # звук
 
-        self.btn_vol_plus.setIcon(QIcon('sw_pic/menu/16119774.png'))
-        self.btn_vol_plus.setIconSize(QSize(15, 15))
-        # РАЗМЕР ЗАМЕНИТЬ НА РАЗМЕР КАРТИНКИ
+        self.btn_vol_plus.setIcon(QIcon('sw_pic/menu/vol_plus.png'))
+        self.btn_vol_plus.setAutoRaise(True)
+        self.btn_vol_plus.setMinimumSize(55, 50)
+        self.btn_vol_plus.setIconSize(self.btn_vol_plus.minimumSize())
         self.btn_vol_plus.adjustSize()
-        self.btn_vol_plus.setStyleSheet("""
-                    QPushButton {background-color: rgb(51,122,183);}
-                """)
-        # СКАЗАТЬ МНЕ СКАЗАТЬ ТЕБЕ ЦВЕТ ФОНА!!!!!!!!!!!!! ВСТАВИТЬ ВЫШЕ (и в дальнейшем)
-        self.btn_vol_plus.move(100, 225)
-        self.btn_vol_plus.clicked.connect(self.startPlay)
+        self.btn_vol_plus.move(172, 180)
+        self.btn_vol_plus.clicked.connect(self.vol_plus)
 
         #
 
-        self.btn_vol_minus.setIcon(QIcon('sw_pic/menu/16119774.png'))
-        self.btn_vol_minus.setIconSize(QSize(15, 15))
-        # РАЗМЕР ЗАМЕНИТЬ НА РАЗМЕР КАРТИНКИ
+        self.btn_vol_minus.setIcon(QIcon('sw_pic/menu/vol_minus.png'))
+        self.btn_vol_minus.setAutoRaise(True)
+        self.btn_vol_minus.setMinimumSize(71, 77)
+        self.btn_vol_minus.setIconSize(self.btn_vol_minus.minimumSize())
         self.btn_vol_minus.adjustSize()
-        self.btn_vol_minus.setStyleSheet("""
-                            QPushButton {background-color: rgb(51,122,183);}
-                        """)
-        # СКАЗАТЬ МНЕ СКАЗАТЬ ТЕБЕ ЦВЕТ ФОНА!!!!!!!!!!!!! ВСТАВИТЬ ВЫШЕ (и в дальнейшем)
-        self.btn_vol_minus.move(150, 225)
-        self.btn_vol_minus.clicked.connect(self.startPlay)
+        self.btn_vol_minus.move(95, 167)
+        self.btn_vol_minus.clicked.connect(self.vol_minus)
 
         # текст управления / правил
 
-        self.text_settings.move(600, 200)
-        self.text_settings.setText("Инструкция:\nкаво\nчево")
+        self.text_settings.move(535, 190)
+        self.text_settings.setText("Как играть:\n\n [w][a][s][d] - движение\n\n[mouse left] - взаимодействие")
         self.text_settings.setStyleSheet("""
             font: times;
             color: white;
             background-color: none;
         """)
-        # НАЙДИ КАК ЭТОЙ ХРЕНЬЮ РАЗМЕР ШРИФТА МЕНЯТЬ А ТО Я БОЧОНОК
         self.text_settings.adjustSize()
 
-        # возможно заменить картинкой а может и нет..
-
-        self.text_volume.move(100, 200)
-        self.text_volume.setText("Громкость:")
-        self.text_volume.setStyleSheet("""
-                    font: times;
-                    color: white;
-                    background-color: none;
-                """)
-        # НАЙДИ КАК ЭТОЙ ХРЕНЬЮ РАЗМЕР ШРИФТА МЕНЯТЬ А ТО Я БОЧОНОК (и жирность не момешает)
-        self.text_volume.adjustSize()
+        self.level_volume()
 
     # перенос настроек в игру + закрытие меню и запуск игры
     def startPlay(self):
+
+        pygame.mixer.music.stop()
+        os.system('python glav.py')
+        #sys.exit()
 
         pass
 
     # работа со звуком
 
-    def vol_plus(self):
+    def level_volume(self):
 
-        pass
+        pygame.mixer.music.set_volume(self.lvl_volume / 10)
+
+        for i in range(6):
+            if self.s_lvl_volume[i][0] == self.lvl_volume:
+                self.im_volume = QPixmap(self.s_lvl_volume[i][1])
+                self.volume.move(107, 235)
+                self.volume.resize(122, 30)
+                self.volume.setPixmap(self.im_volume)
+
+    def vol_plus(self):
+        if self.lvl_volume < 10:
+            self.lvl_volume += 2
+
+        self.level_volume()
 
     def vol_minus(self):
+        if self.lvl_volume > 0:
+            self.lvl_volume -= 2
 
-        pass
-
-    # НАВЕРНОЕ РАЗУМНО БУДЕТ ЕСЛИ КАЖДАЯ ФУНКЦИЯ ВЫЗЫВАТЬ функцию ДЛЯ СОХРАНЕНИЯ РЕЗУЛЬТАТОВ,
-    # НО КАК ТЫ предпочтешь сделать Я НЕ ЗНАЮ
+        self.level_volume()
 
 
 if __name__ == '__main__':
