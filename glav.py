@@ -33,9 +33,9 @@ window = pygame.display.set_mode(SIZE_WINDOW, pygame.FULLSCREEN)
 screen = pygame.Surface(SIZE)
 bloks = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
-enemies.add(Enemy(300, 200))
+# enemies.add(Enemy(300, 200))
 bullets = pygame.sprite.Group()
-shots = pygame.sprite.Group()
+swords = pygame.sprite.Group()
 bar = StatusBar()
 buffs = pygame.sprite.Group()
 storages = pygame.sprite.Group()
@@ -65,12 +65,11 @@ for row in level:
     if x > SIZE[0] or y > SIZE[1]:
         SIZE = (x, y)
     x = 0
-print(SIZE)
 pygame.display.flip()
 pygame.display.toggle_fullscreen()
 
 while running:
-    isShot = False
+    isAttack = False
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -92,7 +91,7 @@ while running:
                 flags[2] = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             coord2 = list(event.pos)
-            isShot = True
+            isAttack = True
 
     screen.fill((47, 79, 79))
     hero.update(flags, bloks)
@@ -103,21 +102,20 @@ while running:
             bullets.add(bul)
     for elem in bullets.sprites():
         elem.update(hero, bloks)
-    if isShot:
-        shot = hero.Shot(coord2)
-        if shot is not None:
-            shots.add(shot)
-    for shot in shots.sprites():
-        shot.update(enemies, bloks)
+    if isAttack:
+        sword = Sword([hero.rect.x, hero.rect.y], coord2)
+        sword.add(swords)
+    for sword in swords.sprites():
+        sword.update(enemies, bloks, hero)
     health, force = hero.status()
     bar.update(health, force)
     buffs.update(hero)
-    storages.update(shots, buffs)
+    storages.update(swords, buffs)
     bloks.draw(screen)
     hero.draw(screen)
     enemies.draw(screen)
     bullets.draw(screen)
-    shots.draw(screen)
+    swords.draw(screen)
     buffs.draw(screen)
     storages.draw(screen)
     bar.draw(window)

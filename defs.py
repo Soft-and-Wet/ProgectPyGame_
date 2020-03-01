@@ -7,6 +7,7 @@ def calculationOfSpeed(coord1, coord2, speed):
     absciss = coord2[0] - coord1[0]
     ordinat = coord2[1] - coord1[1]
     hypotenuse = (absciss ** 2 + ordinat ** 2) ** 0.5
+    print(absciss, ordinat, hypotenuse)
     koef = speed / hypotenuse
     speed_x = koef * absciss
     speed_y = koef * ordinat

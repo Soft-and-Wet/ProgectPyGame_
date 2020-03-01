@@ -24,6 +24,7 @@ class Character(Sprite):
         self.force = 100
         self.clock = time.Clock()
         self.regeneration = SPEEDOFREGENERATION
+        self.pos = 'f'
 
     def draw(self, surface):
         surface.blit(self.image, (self.rect.x, self.rect.y))
@@ -33,10 +34,12 @@ class Character(Sprite):
             self.speed_x = -SPEED
             self.image = image.load('images/jedi/jedi_run_l_1.png').convert()
             self.image.set_colorkey(self.image.get_at((0, 0)))
+            self.pos = 'l'
         if flags[1]:
             self.speed_x = SPEED
             self.image = image.load('images/jedi/jedi_run_r_1.png').convert()
             self.image.set_colorkey(self.image.get_at((0, 0)))
+            self.pos = 'r'
         if flags[2] and self.onFlour:
             self.speed_y = - JUMP
             self.onFlour = False
@@ -44,6 +47,7 @@ class Character(Sprite):
             self.speed_x = 0
             self.image = image.load('images/jedi/jedi_f.png').convert()
             self.image.set_colorkey(self.image.get_at((0, 0)))
+            self.pos = 'f'
         if not self.onFlour:
             self.speed_y += GRAVITY
 
